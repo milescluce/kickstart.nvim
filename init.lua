@@ -1,4 +1,4 @@
---[[
+--[[eve
 
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
@@ -257,7 +257,22 @@ rtp:prepend(lazypath)
 require('lazy').setup({
   -- NOTE: Plugins can be added via a link or github org/name. To run setup automatically, use `opts = {}`
   { 'NMAC427/guess-indent.nvim', opts = {} },
-
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    config = function()
+      require('toggleterm').setup({
+        size = 10,
+        open_mapping = [[<leader>tt]],
+        direction = 'horizontal',
+        shell = 'powershell',
+      })
+      local Terminal = require('toggleterm.terminal').Terminal
+      local term = Terminal:new()
+      vim.keymap.set('n', '<C-\\>', function() term:toggle() end, { desc = 'Toggle terminal' })
+      vim.keymap.set('t', '<C-\\>', function() term:toggle() end, { desc = 'Toggle terminal' })
+    end,
+  },
   -- Alternatively, use `config = function() ... end` for full control over the configuration.
   -- If you prefer to call `setup` explicitly, use:
   --    {
@@ -602,14 +617,14 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        mypy = {},
         -- rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
-        -- ts_ls = {},
+        ts_ls = {},
 
         stylua = {}, -- Used to format Lua code
 
