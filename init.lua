@@ -617,7 +617,29 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        mypy = {},
+        basedpyright = {
+          settings = {
+            basedpyright = {
+              analysis = {
+                useLibraryCodeForTypes = true,
+                typeCheckingMode = 'basic',
+                diagnosticMode = 'workspace',
+                autoSearchPath = true,
+                inlayHints = {
+                  callArgumentNames = true,
+                },
+                extraPaths = {
+                    '...',
+                    '...',
+                },
+              },
+              python = {
+                venvPath = '/path/to/venv',
+                venv = 'venv',
+              },
+            },
+          },
+        },
         -- rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -904,7 +926,7 @@ require('lazy').setup({
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter-intro`
     config = function()
       -- ensure basic parser are installed
-      local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' }
+      local parsers = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'python', 'query', 'vim', 'vimdoc' }
       require('nvim-treesitter').install(parsers)
 
       ---@param buf integer
