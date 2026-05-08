@@ -618,24 +618,33 @@ require('lazy').setup({
         -- clangd = {},
         -- gopls = {},
         basedpyright = {
+          root_dir = function(bufnr, on_dir)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            local from = vim.fs.dirname(fname)
+            local found = vim.fs.find({ '.venv', 'venv', 'pyproject.toml', 'pyrightconfig.json' }, { upward = true, path = from })[1]
+            if found then on_dir(vim.fs.dirname(found)) end
+          end,
+          before_init = function(_, config)
+            local root = config.root_dir
+            if not root then return end
+            local venv = (vim.uv.fs_stat(root .. '/.venv') and root .. '/.venv')
+              or (vim.uv.fs_stat(root .. '/venv') and root .. '/venv')
+            if not venv then return end
+            local py = vim.fn.has 'win32' == 1 and venv .. '/Scripts/python.exe' or venv .. '/bin/python'
+            config.settings = vim.tbl_deep_extend('force', config.settings or {}, {
+              python = { pythonPath = py, venvPath = root, venv = vim.fs.basename(venv) },
+            })
+          end,
           settings = {
             basedpyright = {
               analysis = {
                 useLibraryCodeForTypes = true,
                 typeCheckingMode = 'basic',
                 diagnosticMode = 'workspace',
-                autoSearchPath = true,
+                autoSearchPaths = true,
                 inlayHints = {
                   callArgumentNames = true,
                 },
-                extraPaths = {
-                    '...',
-                    '...',
-                },
-              },
-              python = {
-                venvPath = '/path/to/venv',
-                venv = 'venv',
               },
             },
           },
@@ -694,7 +703,7 @@ require('lazy').setup({
       -- You can press `g?` for help in this menu.
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
-        -- You can add other tools here that you want Mason to install
+        'tree-sitter-cli',
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
