@@ -164,6 +164,14 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Automatically save the buffer when leaving it (e.g. :q, switching buffers, focus lost)
+-- See `:help 'autowriteall'`
+vim.o.autowriteall = true
+
+-- Automatically reload the buffer when the file changes on disk
+-- See `:help 'autoread'`
+vim.o.autoread = true
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
