@@ -12,9 +12,11 @@ return {
   opts = {
     filesystem = {
       filtered_items = {
-        visible = true, -- This is what you want: If you set this to `true`, all "hide" just mean "dimmed out"
-        hide_dotfiles = false,
-        hide_gitignored = false,
+        visible = false,
+        hide_dotfiles = true,
+        hide_gitignored = true,
+        always_show = { ".gitignore", ".env" },  -- always visible
+        never_show = { ".DS_Store", ".git" },     -- never visible
       },
       hijack_netrw_behavior = 'open_current',
       window = {

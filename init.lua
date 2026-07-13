@@ -619,9 +619,9 @@ require('lazy').setup({
         -- gopls = {},
         basedpyright = {
           root_dir = function(bufnr, on_dir)
-            local fname = vim.api.nvim_buf_get_name(bufnr)
-            local from = vim.fs.dirname(fname)
-            local found = vim.fs.find({ '.venv', 'venv', 'pyproject.toml', 'pyrightconfig.json' }, { upward = true, path = from })[1]
+            local from = vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr))
+            local found = vim.fs.find({ 'uv.lock', '.git' }, { upward = true, path = from })[1]
+            or vim.fs.find({ 'pyrightconfig.json', 'pyproject.toml', '.venv', 'venv' }, { upward = true, path = from })[1]
             if found then on_dir(vim.fs.dirname(found)) end
           end,
           before_init = function(_, config)
