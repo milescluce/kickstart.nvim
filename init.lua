@@ -583,7 +583,6 @@ require('lazy').setup({
             }
           end)(),
           filetypes = { 'typescript', 'html' },
-          root_markers = { 'angular.json', 'nx.json', 'project.json' },
         },
 
         stylua = {}, -- Used to format Lua code
